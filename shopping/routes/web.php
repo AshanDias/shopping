@@ -20,3 +20,9 @@ Route::get('/', function () {
 Route::get('/product/get','ProductController@index')->name('getProduct');
 Route::post('/saveProduct','ProductController@store')->name('saveProduct');
 Route::get('/product/details','ProductController@getProuctDetails')->name('productDetails');
+Route::get('/product/moreDetails/{id}','ProductController@details')->name('productDetailsGetId');
+
+//session handle cart
+
+Route::post('/userSaveSession','SessionController@store')->name('saveSession');
+Route::get('/session/getCartBySessionId/{id}','SessionController@getSession')->name('getSession');
