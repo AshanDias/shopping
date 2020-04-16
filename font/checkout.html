@@ -458,7 +458,8 @@
      var address=$('#address').val();
      var phone=$('#phone').val();
 
-        $.ajax({
+        if(address!="" && phone!="" && f_name!="" && l_name!=""&& email!=null){
+            $.ajax({
             url:baseURL+'/order/save',
             method:'POST',
             data:{sessionID:sessionID,f_name:f_name,l_name:l_name,email:email,address:address,phone:phone},
@@ -466,9 +467,15 @@
                 console.log(data);
                 if(data==200){
                     swal("Success", "Your order placed success", "success");
+                }else{
+                    swal("Error", "Please enter order details", "error");
                 }
             }
         });
+        }else{
+            swal("Error", "Enter the billing details !", "error");
+        }
+       
 
     });
 

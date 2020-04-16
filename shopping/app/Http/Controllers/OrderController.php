@@ -56,7 +56,12 @@ class OrderController extends Controller
         ->join('product_details','user_sessions.productDetail_id','=','product_details.id')
         ->where('user_sessions.sessionID',$sessionId)
         ->select('user_sessions.qty as userQty','product_details.*')->get();
+
+        if($response->isEmpty()){
+            return "empty";
+        }
        
+         
         foreach($response as $row)
         {
             $order= new Order();
@@ -81,7 +86,7 @@ class OrderController extends Controller
         }catch(Exception $ex)
         {
             DB::rollBack();
-
+            return 500;
         }
         
     }
