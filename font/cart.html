@@ -343,20 +343,18 @@
                                     <table class="table">
                                         <tr>
                                             <td>Sub Total</td>
-                                            <td>$230</td>
+                                            <td >Rs <span id="subTotal"></span></td>
                                         </tr>
-                                        <tr>
-                                            <td>Shipping</td>
-                                            <td>$70</td>
-                                        </tr>
+                                      
                                         <tr class="total">
                                             <td>Total</td>
-                                            <td class="total-amount">$300</td>
+                                            <td class="total-amount" >Rs <span id="totalValue"></span></td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
-                            <a href="checkout.html" class="btn btn__bg d-block">Proceed To Checkout</a>
+                            <button onclick="checkout()" class="btn btn-block btn btn-primary">Proceed To Checkout</button>
+                            <input type="hidden" id="sessionId">
                         </div>
                     </div>
                 </div>
@@ -394,7 +392,7 @@ var baseURL="http://localhost:8000";
 
 $(document).ready(function(){
     var sessionID=localStorage.getItem("session");
-    
+    $('#sessionId').val(sessionID);
 $.ajax({
     url:baseURL+'/session/getCartBySessionId/'+sessionID,
     method:'GET',
@@ -402,7 +400,11 @@ $.ajax({
     success:function(data){
      
         var cartGrid="";
+        var subTotal=0;
         $.each(data,function(index,value){
+            
+            subTotal=subTotal+value.userQty*value.price;
+               
             cartGrid+='<tr>'+
                                         '<td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="'+baseURL+value.imagePath+'"'+
                                                     'alt="Product" /></a></td>'+
@@ -411,12 +413,15 @@ $.ajax({
                                         '<td class="pro-quantity">'+
                                             '<div class="pro-qty"><input type="text" value="'+value.userQty+'"></div>'+
                                         '</td>'+
-                                        '<td class="pro-subtotal"><span>Rs '+(value.price * value.userQty).toFixed(2)+'</span></td>'+
-                                        '<td class="pro-remove"><button onclick="remove('+value.id+')" href="#"><i class="fa fa-trash-o"></i></button></td>'+
+                                        '<td class="pro-subtotal"><span>Rs '+(value.price * value.userQty).toFixed(2)+'</span></td>'+ 
+                                        '<td class="pro-remove"><button onclick="remove(\''+value.sessionID+'\')" href="#"><i class="fa fa-trash-o"></i></button></td>'+
                                     '</tr>';
-
-            console.log(value);
+                                    
+         
         });
+       
+        $('#subTotal').html(subTotal.toFixed(2));
+        $('#totalValue').html(subTotal.toFixed(2));
 
         $('#cartGrid_data').html(cartGrid);
     }
@@ -425,7 +430,23 @@ $.ajax({
 
 });
 
+
 function remove(id){
-    console.log(id);
+ 
+    $.ajax({
+        url:baseURL+'/session/delete',
+        method:'POST',
+        data:{id:id},
+        success:function(data){
+       
+             window.location.reload();
+         
+        }
+    });
+}
+
+function checkout(){
+    var id=$('#sessionId').val();
+    window.location.replace('checkout.html?id='+id+'');
 }
 </script>
