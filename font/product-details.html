@@ -23,7 +23,7 @@
 
     <!-- Modernizer JS -->
     <script src="assets/js/modernizr-2.8.3.min.js"></script>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!--[if lt IE 9]>
 <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -498,7 +498,7 @@
                 method:'POST',
                 data:{product_id:prodId,qty:qty,sessionID:session},
                 success:function(data){
-                    console.log(data);
+                    swal("Success", "Your item has added", "success");
                 }
 
             });

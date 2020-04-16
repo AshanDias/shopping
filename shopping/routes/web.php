@@ -27,3 +27,9 @@ Route::get('/product/moreDetails/{id}','ProductController@details')->name('produ
 Route::post('/userSaveSession','SessionController@store')->name('saveSession');
 Route::get('/session/getCartBySessionId/{id}','SessionController@getSession')->name('getSession');
 Route::post('/session/delete','SessionController@deleteSession')->name('deleteSession');
+Route::get('/session/getProduct/{id}','SessionController@getSessionListById')->name('getSessionListById');
+
+//order
+Route::post('/order/save','OrderController@store')->name('saveOrder');
+Route::get('/order/get','OrderController@index')->name('getOrder');
+Route::post('/order/delever','OrderController@delever')->name('delever');

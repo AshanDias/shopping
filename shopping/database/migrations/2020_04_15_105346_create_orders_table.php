@@ -18,8 +18,11 @@ class CreateOrdersTable extends Migration
             $table->integer('product_details_id');
             $table->string('userName');
             $table->string('email');
+            $table->integer('mobile');
             $table->integer('qty');
+            $table->float('amount');
             $table->text('address');
+            $table->integer('status')->nullable();
 
             $table->timestamps();
         });

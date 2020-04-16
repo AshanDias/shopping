@@ -15,7 +15,7 @@ class CreateUserSessionsTable extends Migration
     {
         Schema::create('user_sessions', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
+            $table->integer('productDetail_id');
             $table->integer('qty');
             $table->string('sessionID');
             $table->timestamps();

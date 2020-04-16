@@ -40,7 +40,7 @@ class SessionController extends Controller
         //
       
             $sessions= new UserSession();
-            $sessions->product_id=$request->product_id;
+            $sessions->productDetail_id=$request->product_id;
             $sessions->qty=$request->qty;
             $sessions->sessionID=$request->sessionID;
             $sessions->save();
@@ -51,7 +51,7 @@ class SessionController extends Controller
     {
 
         $response=DB::table('user_sessions')
-        ->join('product_details','user_sessions.product_id','=','product_details.id')
+        ->join('product_details','user_sessions.productDetail_id','=','product_details.id')
         ->where('user_sessions.sessionID',$id)
         ->select('user_sessions.qty as userQty','user_sessions.id as sessionID','product_details.*')->get();
         return $response;
@@ -66,6 +66,16 @@ class SessionController extends Controller
          
        // UserSession::where('sessionID',$request->id)->delete()->save();
        
+    }
+
+    public function getSessionListById($id)
+    {
+        $response=DB::table('user_sessions')
+        ->join('product_details','user_sessions.productDetail_id','=','product_details.id')
+        ->join('products','products.id','=','product_details.product_id')
+        ->where('user_sessions.sessionID',$id)
+        ->select('user_sessions.qty as userQty','user_sessions.id as sessionID','product_details.*','products.name as productName')->get();
+        return $response;
     }
 
     /**
