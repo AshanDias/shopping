@@ -17,10 +17,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/foo', function () {
+    Artisan::call('storage:link');
+    return "success";
+});
+
 Route::get('/product/get','ProductController@index')->name('getProduct');
 Route::post('/saveProduct','ProductController@store')->name('saveProduct');
 Route::get('/product/details','ProductController@getProuctDetails')->name('productDetails');
 Route::get('/product/moreDetails/{id}','ProductController@details')->name('productDetailsGetId');
+Route::post('/product/detailById','ProductController@getDetailsByID')->name('detailByID');
 
 //session handle cart
 
