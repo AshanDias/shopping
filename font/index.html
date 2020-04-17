@@ -291,19 +291,19 @@
                         <div class="product-tab-menu pb-30">
                             <ul class="nav justify-content-center">
                                 <li>
-                                    <a class="active" data-toggle="tab" href="#tab_one">mango</a>
+                                    <a class="active" data-toggle="tab" href="#tab_one"><span onclick="loadMango(1)">mango</span></a>
                                 </li>
                                 <li>
-                                    <a data-toggle="tab" href="#tab_two">vegetables</a>
+                                    <a data-toggle="tab" href="#tab_two"><span onclick="loadVege(2)">vegetables</span></a>
                                 </li>
                                 <li>
-                                    <a data-toggle="tab" href="#tab_three">fruits</a>
+                                    <a data-toggle="tab" href="#tab_three"><span onclick="loadFruit(3)">fruits</span></a>
                                 </li>
                                 <li>
-                                    <a data-toggle="tab" href="#tab_four">juice</a>
+                                    <a data-toggle="tab" href="#tab_four"><span onclick="loadJuice(4)">juice</span></a>
                                 </li>
                                 <li>
-                                    <a data-toggle="tab" href="#tab_five">meats</a>
+                                    <a data-toggle="tab" href="#tab_five"><span onclick="loadMeat(5)">meats</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -311,7 +311,7 @@
                         <div class="tab-content">
                             <div class="tab-pane fade active show" id="tab_one">
                                 <div class="product-tab-wrapper">
-                                    <div class="row" id="row_Data">
+                                    <div class="row" id="row_Data" >
 
                                       
                                     
@@ -1105,49 +1105,11 @@
 </html>
 
 <script>
-
+ var baseURL="http://localhost:8000";
 $(document).ready(function(){
 
-   var baseURL="http://localhost:8000";
+    loadDetailById(1);
 
-   $.ajax({
-
-       url:baseURL+"/product/details",
-       method:'GET',
-       data:{},
-       success:function(response){
-           var rowData="";
-          $.each(response,function(index,value){
-              
-             rowData+='<div class="col-lg-3 col-md-4 col-sm-6">'+
-                                            '<div class="product-item mb-50">'+
-                                             '<div class="product-thumb">'+
-                                              '<span onclick="viewDetails('+value.id+')">'+
-                                                       '<img height="350px" width="400px" src="'+baseURL+value.imagePath+'" alt="">'+
-                                                    '</span>'+
-                                                   
-                                                '</div>'+
-                                                '<div class="product-content text-center">'+
-                                                 
-                                                    '<div class="product-name">'+
-                                                        '<h4 class="h5">'+
-                                                            '<span onclick="viewDetails('+value.id+')">'+value.shortName+'</span>'+
-                                                        '</h4>'+
-                                                    '</div>'+
-                                                    '<div class="price-box">'+
-                                                        '<span class="regular-price">Rs '+value.price.toFixed(2)+' </span>'+
-                                                        '<span class="old-price"><del></del></span>'+
-                                                    '</div>'+
-                                                 
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>';
-          });
-
-          $('#row_Data').html(rowData);
-       }
-       
-   });
 
 });
 
@@ -1155,5 +1117,79 @@ function viewDetails(id){
     
     window.location.replace('product-details.html?id='+id+'');
 }
+
+function loadMango(id){
+    
+    loadDetailById(id);
+}
+
+function loadVege(id){
+    loadDetailById(id);
+}
+
+function loadFruit(id){
+    loadDetailById(id);
+}
+function loadJuice(id){
+    loadDetailById(id);
+}
+
+function loadMeat(id){
+    loadDetailById(id);
+}
+
+
+function loadDetailById(id)
+{
+    $.ajax({
+
+url:baseURL+"/product/detailById",
+method:'POST',
+data:{id:id},
+success:function(response){
+    console.log(response.length);
+if(response.length!=0)
+{
+
+
+    var rowData="";
+   $.each(response,function(index,value){
+       
+      rowData+='<div class="col-lg-3 col-md-4 col-sm-6">'+
+                                     '<div class="product-item mb-50">'+
+                                      '<div class="product-thumb">'+
+                                       '<span onclick="viewDetails('+value.id+')">'+
+                                                '<img height="350px" width="400px" src="'+baseURL+value.imagePath+'" alt="">'+
+                                             '</span>'+
+                                            
+                                         '</div>'+
+                                         '<div class="product-content text-center">'+
+                                          
+                                             '<div class="product-name">'+
+                                                 '<h4 class="h5">'+
+                                                     '<span onclick="viewDetails('+value.id+')">'+value.shortName+'</span>'+
+                                                 '</h4>'+
+                                             '</div>'+
+                                             '<div class="price-box">'+
+                                                 '<span class="regular-price">Rs '+value.price.toFixed(2)+'</span>'+
+                                                 '<span class="old-price"><del></del></span>'+
+                                             '</div>'+
+                                          
+                                         '</div>'+
+                                     '</div>'+
+                                 '</div>';
+   });
+
+   $('#row_Data').html(rowData);
+    }else{
+       
+        $('#row_Data').html('<div class="col-md-5"></div><div class="col-lg-3"><p style="text-align: center;">No records found ! </p></div>');
+    }
+}
+
+});
+}
+
+
 
 </script>
