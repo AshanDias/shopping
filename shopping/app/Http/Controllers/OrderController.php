@@ -25,14 +25,14 @@ class OrderController extends Controller
 
        // $response=DB::table('orders')->groupBy('mobile')->get();
          
-        $response=DB::table('orders')
+       // $response=DB::table('orders')
+        $response=Order::select('orders.*','products.name as productName','product_details.shortName',DB::raw('SUM(amount) as total_points'))
         ->join('product_details','orders.product_details_id','=','product_details.id')
         ->Join('products','products.id','=','product_details.product_id')
-         ->select('orders.*','products.name as productName','product_details.shortName')
          ->groupBy('orders.order_index_values')
          ->get(); 
          
-    
+     //  ->select('orders.*','products.name as productName','product_details.shortName')
            // $response=$response->groupBy('orders.mobile');
         return $response;
 

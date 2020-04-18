@@ -597,10 +597,10 @@
             method: 'GET',
             data: {},
             success: function (response) {
-                console.log(response);
+               console.log(response);
                 var table="";
               $.each(response,function(index,value){
-               console.log(value);
+              // console.log(value);
                 var status="";
                 if(value.status==0){
                 status="Pending";
@@ -612,7 +612,7 @@
                     "<td>"+value.id+"</td>"+
                    "<td>"+value.userName+"</td>"+
                     "<td>"+value.email+"</td>"+                                     
-                    "<td>"+value.amount+"</td>"+                                       
+                    "<td>"+value.total_points+"</td>"+                                       
                     "<td>"+value.address+"</td>"+                                       
                     "<td>"+value.mobile+"</td>"+                                       
                     "<td>"+ status+"</td>"+                                       
