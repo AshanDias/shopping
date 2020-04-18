@@ -34,8 +34,10 @@ Route::post('/userSaveSession','SessionController@store')->name('saveSession');
 Route::get('/session/getCartBySessionId/{id}','SessionController@getSession')->name('getSession');
 Route::post('/session/delete','SessionController@deleteSession')->name('deleteSession');
 Route::get('/session/getProduct/{id}','SessionController@getSessionListById')->name('getSessionListById');
+Route::post('/session/update/qty','SessionController@updateSession')->name('updateSession');
 
 //order
 Route::post('/order/save','OrderController@store')->name('saveOrder');
 Route::get('/order/get','OrderController@index')->name('getOrder');
 Route::post('/order/delever','OrderController@delever')->name('delever');
+Route::post('/order/getDetailsById','OrderController@getDetailsById')->name('getDetailsById');

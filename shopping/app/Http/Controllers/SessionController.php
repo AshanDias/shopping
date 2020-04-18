@@ -57,6 +57,15 @@ class SessionController extends Controller
         return $response;
     }
 
+    public function updateSession(Request $request)
+    {
+        $response=UserSession::find($request->id);
+        $response->qty=$request->qty;
+        
+        $response->save();
+         return 200;
+    }
+
 
     public function deleteSession(Request $request)
     {

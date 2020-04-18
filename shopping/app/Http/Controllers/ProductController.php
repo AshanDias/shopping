@@ -40,6 +40,17 @@ class ProductController extends Controller
         return $response;
     }
 
+    public function getDetailsByID(Request $request)
+    {
+        $id=$request->id;
+
+        $response=DB::table('product_details')
+        ->join('products','products.id','=','product_details.product_id')
+        ->where('product_details.product_id',$id)
+        ->select('products.name as product','product_details.*')->get();
+        return $response;
+    } 
+
     /**
      * Show the form for creating a new resource.
      *

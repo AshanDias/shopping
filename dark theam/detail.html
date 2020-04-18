@@ -451,7 +451,7 @@
                     <ul id="sidebarnav">
                         <li class="nav-devider"></li>
                         <li class="nav-small-cap">PERSONAL</li>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Order Detils </span></a>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="./index.html" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Order Detils </span></a>
                             
                         </li>
                         <li> <a class="has-arrow waves-effect waves-dark" href="./ProductTable.html" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">Product Details</span></a>
@@ -510,19 +510,37 @@
                                             <tr>
                                                 <th>Id</th>
                                                <th>User Name</th>
-                                                <th>Email</th>
+                                               <th>Order Item</th>
+                                               <th>Quantity</th>
+                                                
                                                 <th>Amount</th>
-                                                <th>Address</th>
-                                                <th>Mobile</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                               
+                                                
                                             </tr>
                                         </thead>
                                         
                                         <tbody id="table_tr">
                                            
                                         </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+                
+                    <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                               
+                                <div class="table-responsive m-t-40">
+                                    <table id="table_product" class="display nowrap table table-hover table-striped" cellspacing="0" width="100%" border="2">
+                                        <thead id="th_data">
+                                            
+                                        </thead>
+                                        
+                                      
                                     </table>
                                 </div>
                             </div>
@@ -591,59 +609,71 @@
 
     $(document).ready(function () {
       
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        var id = vars["id"];
       
         $.ajax({
-            url: baseURL + '/order/get',
-            method: 'GET',
-            data: {},
+            url: baseURL + '/order/getDetailsById',
+            method: 'POST',
+            data: {id:id},
             success: function (response) {
-                console.log(response);
+              
+              
+             
+                var totalAmount=0;
                 var table="";
               $.each(response,function(index,value){
-               console.log(value);
-                var status="";
-                if(value.status==0){
-                status="Pending";
-                }else{
-                    status="Delevered";  
-                }
+             
                
+                totalAmount+=value.amount;
                 table+="<tr>"+
                     "<td>"+value.id+"</td>"+
                    "<td>"+value.userName+"</td>"+
-                    "<td>"+value.email+"</td>"+                                     
-                    "<td>"+value.amount+"</td>"+                                       
-                    "<td>"+value.address+"</td>"+                                       
-                    "<td>"+value.mobile+"</td>"+                                       
-                    "<td>"+ status+"</td>"+                                       
-                    "<td><button class='fa fa-user' onclick='remove(\""+value.id+"\")'></button><button class='fa fa-eye' onclick='viewDetails(\""+value.mobile+"\")'></button></td>"+                                       
+                    "<td>"+value.shortName+"</td>"+                                     
+                    "<td>"+value.qty+"</td>"+                                       
+                    "<td>"+value.amount+"</td>"+                                        
                      "</tr>";
-              })
+              });
               $('#table_tr').html(table);
+
+              console.log(totalAmount);
+              var th_data=' <tr>'+
+                                  '<th>User Name</th>'+
+                                 '<th>'+response[0].userName+'</th>'+
+                             '</tr>'
+                             
+                             +'<tr>'+
+                                  '<th>Email</th>'+
+                                 '<th>'+response[0].email+'</th>'+
+                             '</tr>'+ 
+
+                             '<tr>'+
+                                  '<th>Address</th>'+
+                                 '<th>'+response[0].address+'</th>'+
+                             '</tr>'+
+                             
+                               '<tr>'+
+                                  '<th>Mobile</th>'+
+                                 '<th>'+response[0].mobile+'</th>'+
+                             '</tr>'+
+                             
+                              '<tr>'+
+                                  '<th>Total Amount </th>'+
+                                 '<th>Rs '+totalAmount+'</th>'+
+                             '</tr>';
+
+                     $('#th_data').html(th_data);
             }
 
 
         });
     });
 
-function remove(id){
-  
 
-    $.ajax({
-        url:baseURL+'/order/delever',
-        method:'POST',
-        data:{id:id},
-        success:function(data){
-           console.log(data);
-           if(data==200){
-               window.location.reload();
-           }
-        }
-    });
-}
-
-function viewDetails(id){
-    
-    window.location.replace('detail.html?id='+id+'');
-}
 </script>

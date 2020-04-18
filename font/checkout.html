@@ -302,6 +302,7 @@
                 console.log(data);
                 if(data==200){
                     swal("Success", "Your order placed success", "success");
+                    $('#btn_submit').prop('disabled',true);  
                 }else{
                     swal("Error", "Please enter order details", "error");
                 }

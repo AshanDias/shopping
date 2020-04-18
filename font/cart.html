@@ -204,7 +204,7 @@
     <!--== End Footer Area Wrapper ==-->
 
     <!-- Scroll to top start -->
-    <div class="scroll-top not-visible">
+    <div  class="scroll-top not-visible">
         <i class="fa fa-angle-up"></i>
     </div>
     <!-- Scroll to Top End -->
@@ -246,7 +246,7 @@ $.ajax({
                                         '<td class="pro-title"><a href="#">'+value.shortName+'</a></td>'+
                                         '<td class="pro-price"><span>Rs '+value.price.toFixed(2)+'</span></td>'+
                                         '<td class="pro-quantity">'+
-                                            '<div class="pro-qty"><input type="text" value="'+value.userQty+'"></div>'+
+                                            '<div class="pro-qty"><input type="text"  onblur="changeQty(this.value,'+value.sessionID+','+value.price+')" value="'+value.userQty+'"></div>'+
                                         '</td>'+
                                         '<td class="pro-subtotal"><span>Rs '+(value.price * value.userQty).toFixed(2)+'</span></td>'+ 
                                         '<td class="pro-remove"><button onclick="remove(\''+value.sessionID+'\')" href="#"><i class="fa fa-trash-o"></i></button></td>'+
@@ -265,6 +265,23 @@ $.ajax({
 
 });
 
+function changeQty(qty,id,price){
+  
+
+$.ajax({
+    url:baseURL+'/session/update/qty',
+    method:'POST',
+    data:{id:id,qty:qty},
+    success:function(data){
+        console.log(data);
+        var amount=price*qty;
+        $('#subTotal').html(amount);
+        $('#totalValue').html(amount);
+    }
+
+});
+
+}
 
 function remove(id){
  

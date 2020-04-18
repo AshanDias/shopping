@@ -18,12 +18,36 @@ class OrderController extends Controller
     {
         //
 
+        // $response=DB::table('orders')
+        // ->Join('products','products.id','=','orders.product_details_id')
+        //  ->select('orders.*','products.name as shortName')->get(); 
+
+       // $response=DB::table('orders')->groupBy('mobile')->get();
+         
         $response=DB::table('orders')
         ->join('product_details','orders.product_details_id','=','product_details.id')
-         ->select('orders.*','product_details.shortName')->get();
-
+        ->Join('products','products.id','=','product_details.product_id')
+         ->select('orders.*','products.name as productName','product_details.shortName')
+         ->groupBy('orders.mobile')
+         ->get(); 
+         
+    
+           // $response=$response->groupBy('orders.mobile');
         return $response;
 
+    }
+
+    public function getDetailsById(Request $request)
+    {
+     
+        $response=DB::table('orders')
+        ->join('product_details','orders.product_details_id','=','product_details.id')
+        ->Join('products','products.id','=','product_details.product_id')
+        ->where('orders.mobile',$request->id)
+         ->select('orders.*','products.name as productName','product_details.shortName')
+        
+         ->get(); 
+         return $response;
     }
 
     /**
@@ -60,12 +84,12 @@ class OrderController extends Controller
         if($response->isEmpty()){
             return "empty";
         }
-       
+        
          
         foreach($response as $row)
         {
             $order= new Order();
-            $order->product_details_id=$row->product_id;
+            $order->product_details_id=$row->id;
             $order->userName=$request->f_name;
             $order->email=$request->email;
             $order->qty=$row->userQty;
