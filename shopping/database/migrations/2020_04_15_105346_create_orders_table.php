@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->integer('qty');
             $table->float('amount');
             $table->text('address');
+            $table->integer('order_index_values');
             $table->integer('status')->nullable();
 
             $table->timestamps();

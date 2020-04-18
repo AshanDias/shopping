@@ -190,6 +190,8 @@
                             </div>
                             <button onclick="checkout()" class="btn btn-block btn btn-primary">Proceed To Checkout</button>
                             <input type="hidden" id="sessionId">
+
+                           
                         </div>
                     </div>
                 </div>
@@ -223,8 +225,10 @@
 </html>
 
 <script>
-var baseURL="http://localhost:8000";
 
+  
+var baseURL="http://localhost:8000";
+var subTotal=0;
 $(document).ready(function(){
     var sessionID=localStorage.getItem("session");
     $('#sessionId').val(sessionID);
@@ -235,7 +239,7 @@ $.ajax({
     success:function(data){
      
         var cartGrid="";
-        var subTotal=0;
+        
         $.each(data,function(index,value){
             
             subTotal=subTotal+value.userQty*value.price;
@@ -246,9 +250,9 @@ $.ajax({
                                         '<td class="pro-title"><a href="#">'+value.shortName+'</a></td>'+
                                         '<td class="pro-price"><span>Rs '+value.price.toFixed(2)+'</span></td>'+
                                         '<td class="pro-quantity">'+
-                                            '<div class="pro-qty"><input type="text"  onblur="changeQty(this.value,'+value.sessionID+','+value.price+')" value="'+value.userQty+'"></div>'+
+                                            '<div class="pro-qty"><input type="text"  onblur="changeQty(this.value,'+value.sessionID+','+value.price+')"  value="'+value.userQty+'"></div>'+
                                         '</td>'+
-                                        '<td class="pro-subtotal"><span>Rs '+(value.price * value.userQty).toFixed(2)+'</span></td>'+ 
+                                        '<td class="pro-subtotal"><span>Rs '+(value.price * value.userQty)+'</span></td>'+ 
                                         '<td class="pro-remove"><button onclick="remove(\''+value.sessionID+'\')" href="#"><i class="fa fa-trash-o"></i></button></td>'+
                                     '</tr>';
                                             

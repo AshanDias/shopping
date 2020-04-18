@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\UserSession;
+use App\OrderIndexValue;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,7 @@ class OrderController extends Controller
         ->join('product_details','orders.product_details_id','=','product_details.id')
         ->Join('products','products.id','=','product_details.product_id')
          ->select('orders.*','products.name as productName','product_details.shortName')
-         ->groupBy('orders.mobile')
+         ->groupBy('orders.order_index_values')
          ->get(); 
          
     
@@ -43,7 +44,7 @@ class OrderController extends Controller
         $response=DB::table('orders')
         ->join('product_details','orders.product_details_id','=','product_details.id')
         ->Join('products','products.id','=','product_details.product_id')
-        ->where('orders.mobile',$request->id)
+        ->where('orders.order_index_values',$request->id)
          ->select('orders.*','products.name as productName','product_details.shortName')
         
          ->get(); 
@@ -71,10 +72,17 @@ class OrderController extends Controller
         //
 
         try{
-
+           
+           
+           
             DB::beginTransaction();
 
         $sessionId=$request->sessionID;
+            
+     
+        $maxOrder=OrderIndexValue::max('index_no');
+
+     
 
         $response=DB::table('user_sessions')
         ->join('product_details','user_sessions.productDetail_id','=','product_details.id')
@@ -97,12 +105,20 @@ class OrderController extends Controller
             $order->address=$request->address;
             $order->mobile=$request->phone;
             $order->status=0;
+            $order->order_index_values=$maxOrder;
             $order->save();
 
 
         }
 
         UserSession::where('sessionID',$sessionId)->delete();
+
+        $maxOrder++;
+        $orderValue=OrderIndexValue::first();
+        $orderValue->index_no=$maxOrder;
+        $orderValue->save();
+
+     //   $maxOrderDetail=OrderIndexValue::wh
 
         DB::commit();
         return 200;
